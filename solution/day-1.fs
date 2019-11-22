@@ -1,16 +1,23 @@
 ﻿module day_1
 
-open System.IO
 open common
 
+let parse_char = function
+    | ')' -> -1
+    | '(' -> +1
+    | c -> failwithf "unexpected char in input: %c" c
 
-let x = "testiu 1 2 3"
+let steps =
+    read_input 1
+    |> Seq.map parse_char
 
-let input = read_input 1
+let answer =
+    steps
+    |> Seq.sum
 
-let parse_char c = match c with
-    | ')' -> - 1
-    | '(' -> + 1
-
-let answer = read_input 1 |> Seq.map parse_char |> Seq.sum
+let answer' =
+    steps
+    |> Seq.scan (+) 0
+    |> Seq.takeWhile (fun n -> n >= 0)
+    |> Seq.length
 
