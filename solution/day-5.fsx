@@ -1,6 +1,5 @@
-﻿module day_5
+﻿#load "input.fsx"
 
-open common
 open System.Text.RegularExpressions
 
 let rec containsVowels count (s: string) =
@@ -30,7 +29,7 @@ let isNice (s: string) =
     condition1 s && condition2 s && condition3 s
 
 let answer =
-    read_input_lines 5
+    Input.lines 5
     |> Seq.where isNice
     |> Seq.length
 
@@ -49,7 +48,7 @@ let isNice' (s: string) =
     condition1' s && condition2' s
 
 let answer' =
-    read_input_lines 5
+    Input.lines 5
     |> Seq.where isNice'
     |> Seq.length
 

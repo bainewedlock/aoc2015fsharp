@@ -1,6 +1,4 @@
-﻿module day_1
-
-open common
+﻿#load "input.fsx"
 
 let parse_char = function
     | ')' -> -1
@@ -8,7 +6,7 @@ let parse_char = function
     | c -> failwithf "unexpected char in input: %c" c
 
 let steps =
-    read_input 1
+    Input.text 1
     |> Seq.map parse_char
 
 let answer =

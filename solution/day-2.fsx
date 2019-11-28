@@ -1,6 +1,5 @@
-﻿module day_2
+﻿#load "input.fsx"
 
-open common
 open System
 open System.Text.RegularExpressions
 
@@ -23,7 +22,7 @@ let parse_line line =
     |> Seq.toList
 
 let answer =
-    read_input 2
+    Input.text 2
     |> split_lines
     |> Array.map parse_line
     |> Array.map calc_paper
@@ -34,7 +33,7 @@ let calc_ribbon = function
     | _ -> failwith "cant calc ribbon"
 
 let answer' =
-    read_input 2
+    Input.text 2
     |> split_lines
     |> Array.map parse_line
     |> Array.map calc_ribbon

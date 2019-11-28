@@ -1,8 +1,7 @@
-﻿module day_4
+﻿#load "input.fsx"
 
 open System.Security.Cryptography
 open System.Text
-open common
 
 let md5 (data : byte array) : string =
     use md5 = MD5.Create()
@@ -22,17 +21,19 @@ let test key min index =
     | zero_count when zero_count >= min -> index
     | _ -> 0
 
+
+#time
 let answer =
-    let key = read_input 4
+    let key = Input.text 4
     Seq.initInfinite id
     |> Seq.map (test key 5)
     |> Seq.find (fun x -> x > 0)
+#time
 
+#time
 let answer' =
-    let key = read_input 4
+    let key = Input.text 4
     Seq.initInfinite id
     |> Seq.map (test key 6)
     |> Seq.find (fun x -> x > 0)
-
-
-
+#time
