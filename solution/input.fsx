@@ -1,11 +1,11 @@
 ﻿open System.IO
 
-let text n =
-    let solution_directory = Directory.GetParent(__SOURCE_DIRECTORY__).FullName
+let path n =
     let file = sprintf "input-%d.txt" n
-    let input_path = Path.Combine(solution_directory, "data", file)
-    File.ReadAllText(input_path).Trim()
+    Path.Combine(__SOURCE_DIRECTORY__, "data", file)
+
+let text n =
+    File.ReadAllText(path n).Trim()
 
 let lines n = 
-    (text n).Split('\n')
-    |> Array.map (fun s -> s.Trim())
+    File.ReadAllLines(path n)
