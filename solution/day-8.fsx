@@ -8,20 +8,30 @@ let regexReplace
   (input : string) =
   Regex.Replace(input, pattern, replacement)
 
-let reduce =
+let decode =
   regexReplace @"^""|""$" ""        >> // remove surrounding quotes
   regexReplace @"\\""" "?"          >> // replace \" with ?
   regexReplace @"\\\\" "?"          >> // replace \\ with ?
   regexReplace @"\\x[0-9a-f]{2,2}" "?" // replace \x?? with ?
 
-let analyzeLine line =
-  let reduced = reduce line
+let analyzeLine change line =
+  let changed = change line
   let lineLength = String.length line
-  let reducedLength = String.length reduced
+  let reducedLength = String.length changed
   lineLength - reducedLength
 
-let analyzeLines = Seq.map analyzeLine >> Seq.sum
+let analyzeFile change file =
+  Input.lines file
+  |> Seq.map (analyzeLine change)
+  |> Seq.sum
 
-let sample = Input.lines "8sample" |> analyzeLines
+let sample = analyzeFile decode "8sample"
+let answer = analyzeFile decode "8"
 
-let answer = Input.lines "8" |> analyzeLines
+let encode =
+  regexReplace @"""" "??"           >> // escape "
+  regexReplace @"\\" "??"           >> // replace \
+  regexReplace @"^.*$" "?$0?"          // surround
+
+let sample' = - analyzeFile encode "8sample"
+let answer' = - analyzeFile encode "8"
