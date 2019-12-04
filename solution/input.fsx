@@ -1,7 +1,7 @@
 ﻿open System.IO
 
-let path n =
-    let file = sprintf "input-%d.txt" n
+let path suffix =
+    let file = sprintf "input-%s.txt" suffix
     Path.Combine(__SOURCE_DIRECTORY__, "data", file)
 
 let text n =

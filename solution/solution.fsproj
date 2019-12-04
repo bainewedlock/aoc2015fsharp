@@ -10,21 +10,24 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="data\input-1.txt" />
-    <Content Include="data\input-2.txt" />
-    <Content Include="data\input-3.txt" />
-    <Content Include="data\input-4.txt" />
-    <Content Include="data\input-5.txt" />
-    <Content Include="data\input-6.txt" />
+    <Content Include="data\input-8sample.txt" />
+    <Content Include="data\input-8.txt" />
     <Content Include="data\input-7.txt" />
+    <Content Include="data\input-6.txt" />
+    <Content Include="data\input-5.txt" />
+    <Content Include="data\input-4.txt" />
+    <Content Include="data\input-3.txt" />
+    <Content Include="data\input-2.txt" />
+    <Content Include="data\input-1.txt" />
     <None Include="input.fsx" />
-    <None Include="day-1.fsx" />
-    <None Include="day-2.fsx" />
-    <None Include="day-3.fsx" />
-    <None Include="day-4.fsx" />
-    <None Include="day-5.fsx" />
-    <None Include="day-6.fsx" />
+    <None Include="day-8.fsx" />
     <None Include="day-7.fsx" />
+    <None Include="day-6.fsx" />
+    <None Include="day-5.fsx" />
+    <None Include="day-4.fsx" />
+    <None Include="day-3.fsx" />
+    <None Include="day-2.fsx" />
+    <None Include="day-1.fsx" />
   </ItemGroup>
 
 </Project>
