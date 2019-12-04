@@ -16,6 +16,7 @@
     <Content Include="data\input-4.txt" />
     <Content Include="data\input-5.txt" />
     <Content Include="data\input-6.txt" />
+    <Content Include="data\input-7.txt" />
     <None Include="input.fsx" />
     <None Include="day-1.fsx" />
     <None Include="day-2.fsx" />
@@ -23,6 +24,7 @@
     <None Include="day-4.fsx" />
     <None Include="day-5.fsx" />
     <None Include="day-6.fsx" />
+    <None Include="day-7.fsx" />
   </ItemGroup>
 
 </Project>
