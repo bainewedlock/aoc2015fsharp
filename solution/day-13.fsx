@@ -33,7 +33,7 @@ let rec distribute e = function
   | x::xs' as xs -> (e::xs)::[for xs in distribute e xs' -> x::xs]
 let rec permute = function
   | [] -> [[]]
-  | e::xs -> List.collect (distribute e) (permute xs)
+  | e::xs -> List.collect <| distribute e <| permute xs
 
 let circlePermute (people : char list) =
   match people with
@@ -54,6 +54,6 @@ let answer =
   |> List.max
 
 let answer' =
-  circlePermute ('Y'::people)
+  circlePermute <| 'Y'::people
   |> List.map eval
   |> List.max
