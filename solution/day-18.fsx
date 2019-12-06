@@ -44,7 +44,6 @@ let tick size state =
       | false, 3 -> cell::on
       | _, _ -> on) []
   |> Set
-
 let solve size steps input fIntercept =
   {1..steps}
   |> Seq.fold (fun state t ->
@@ -55,7 +54,6 @@ let solve size steps input fIntercept =
     |> fIntercept)
       (parseInput input)
   |> Set.count
-
 let sample = solve 6 4 "sample-18" id
 
 #time
