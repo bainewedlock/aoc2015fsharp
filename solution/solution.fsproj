@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="data\sample-15.txt" />
     <Content Include="data\input-15.txt" />
     <Content Include="data\sample-14.txt" />
     <Content Include="data\input-14.txt" />

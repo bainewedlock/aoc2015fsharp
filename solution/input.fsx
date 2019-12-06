@@ -9,3 +9,6 @@ let asText n =
 
 let asLines n = 
     File.ReadAllLines(path n)
+
+let asList n =
+    asLines n |> Array.toList 
