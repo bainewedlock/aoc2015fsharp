@@ -1,24 +1,17 @@
 ﻿#load "input.fsx"
 
 module Compositions =
-  let rec private next (t : int) (acc : int list) =
-    let output f = Some (f, f)
-    match acc with
-    | [] -> None
-    | head::tail ->
-      let s = List.sum acc
-      if s < t
-      then output <| (head+1)::tail
-      else
-        match next t tail with
-        | Some (_, rest) ->
-          output <| 0::rest
-        | None -> None
-
+  let rec private next n unused acc = seq {
+    match unused with
+    | [] -> yield acc
+    | [_] -> yield n::acc
+    | _::tail ->
+      for i in { 0..n } do
+        yield! next (n-i) tail <| i::acc
+  }
   let generate n t =
-    List.replicate n 0
-    |> Seq.unfold (next t)
-    |> Seq.toList  
+    next t (List.replicate n 0) []
+    |> Seq.toList
 
 module Matrix = 
   let rec transpose matrix = 
@@ -32,11 +25,21 @@ module Matrix =
       | _ -> []
     | _ -> [] 
 
-type Ingredient = { properties: int list; calories: int }
+type Ingredient =
+
+  { properties: int list; calories: int }
+
+  static member (*) (x, n) =
+    let multiply = (fun v -> v * n)
+    {
+      properties = x.properties |> List.map multiply
+      calories = x.calories |> multiply
+    }
+
 module Ingredient =
   let parse (line : string) =
-// Example:
-// "Butterscotch: capacity -1, durability -2, flavor 6, texture 3, calories 8" 
+  // Example:
+  // "Butterscotch: capacity -1, durability -2, flavor 6, texture 3, calories 8" 
     let tokens = line.Replace(",", "").Split ' '
     { 
       properties = [
@@ -59,6 +62,7 @@ module Ingredient =
       ingredients
       |> List.sumBy (fun i -> i.calories)
     (value, calories)
+
   let scale (x : Ingredient, factor : int) =
     let multiply = (fun v -> v * factor)
     {
@@ -72,19 +76,10 @@ let solve input caloriesFilter =
   |> List.map (List.zip ingredients >> List.map Ingredient.scale)
   |> List.map Ingredient.score
   |> List.filter (fun (_, c) -> caloriesFilter c)
-  |> List.maxBy (fun (s, _) -> s)
+  |> List.map fst
+  |> List.max
 
 let sample = solve "sample-15" (fun _ -> true)
-#time
 let answer = solve "input-15" (fun _ -> true)
-#time
-//Real: 00:01:06.984, CPU: 00:01:06.390, GC gen0: 4736, gen1: 383, gen2: 7
-//val answer : int * int = (18965440, 554)
-
 let sample' = solve "sample-15" (fun c -> c = 500)
-#time
 let answer' = solve "input-15" (fun c -> c = 500)
-#time
-//Real: 00:00:42.806, CPU: 00:00:42.984, GC gen0: 4753, gen1: 474, gen2: 3
-//val answer' : int * int = (15862900, 500)
-
