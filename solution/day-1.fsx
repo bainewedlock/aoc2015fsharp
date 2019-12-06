@@ -6,7 +6,7 @@ let parse_char = function
     | c -> failwithf "unexpected char in input: %c" c
 
 let steps =
-    Input.text "1"
+    Input.asText "1"
     |> Seq.map parse_char
 
 let answer =

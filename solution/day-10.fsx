@@ -14,5 +14,5 @@ let read (input : string) =
   |> fun items -> String.Concat(items)
 
 {1..50}
-|> Seq.fold (fun last _ -> read last) (Input.text "10")
+|> Seq.fold (fun last _ -> read last) (Input.asText "10")
 |> Seq.length

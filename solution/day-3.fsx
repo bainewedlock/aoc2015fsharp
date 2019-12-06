@@ -10,7 +10,7 @@ let parse_char = function
 let walk (x, y) (x', y') = (x+x', y+y')
 
 let answer =
-    Input.text "3"
+    Input.asText "3"
     |> Seq.map parse_char
     |> Seq.scan walk (0, 0)
     |> Seq.distinct
@@ -21,7 +21,7 @@ let multi_walk states steps =
     |> List.map (fun (state, step) -> walk state step)
 
 let answer' =
-    Input.text "3"
+    Input.asText "3"
     |> Seq.map parse_char
     |> Seq.chunkBySize 2
     |> Seq.map Array.toList

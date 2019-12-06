@@ -49,7 +49,7 @@ let memoize f =
 
 #time
 let answer =
-  let instructions = Input.lines "7" |> Seq.map ParseLine |> dict
+  let instructions = Input.asLines "7" |> Seq.map ParseLine |> dict
   let Eval recur wire =
     match wire with
     | OneMatch "$d" a -> int a
@@ -74,7 +74,7 @@ let answer' =
     else 
       (key, value)
   let instructions =
-    Input.lines "7"
+    Input.asLines "7"
     |> Seq.map ParseLine
     |> Seq.map (Rewire "b" (string answer))
     |> dict

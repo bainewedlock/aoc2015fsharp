@@ -29,7 +29,7 @@ let isNice (s: string) =
     condition1 s && condition2 s && condition3 s
 
 let answer =
-    Input.lines "5"
+    Input.asLines "5"
     |> Seq.where isNice
     |> Seq.length
 
@@ -48,7 +48,7 @@ let isNice' (s: string) =
     condition1' s && condition2' s
 
 let answer' =
-    Input.lines "5"
+    Input.asLines "5"
     |> Seq.where isNice'
     |> Seq.length
 

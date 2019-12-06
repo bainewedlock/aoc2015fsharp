@@ -4,7 +4,7 @@ open System.Linq
 open System.Text.RegularExpressions
 
 let answer = 
-  let input = (Input.text "12")
+  let input = (Input.asText "12")
   Regex.Matches(input, @"(?<!"")-?\d+(?!"")").Cast<Match>()
   |> Seq.sumBy (fun m -> int m.Value)
 
@@ -24,5 +24,5 @@ let rec extract node =
   | JsonValue.Number x -> int x
   | _ -> 0
 let answer' =
-  JsonValue.Parse(Input.text "12")
+  JsonValue.Parse(Input.asText "12")
   |> extract

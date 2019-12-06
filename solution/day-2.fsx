@@ -22,7 +22,7 @@ let parse_line line =
     |> Seq.toList
 
 let answer =
-    Input.text "2"
+    Input.asText "2"
     |> split_lines
     |> Array.map parse_line
     |> Array.map calc_paper
@@ -33,7 +33,7 @@ let calc_ribbon = function
     | _ -> failwith "cant calc ribbon"
 
 let answer' =
-    Input.text "2"
+    Input.asText "2"
     |> split_lines
     |> Array.map parse_line
     |> Array.map calc_ribbon

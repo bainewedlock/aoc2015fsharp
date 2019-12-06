@@ -24,7 +24,7 @@ let parseRoutes =
   dict
 
 let analyzeFile factor file =
-  let routes = Input.lines file |> parseRoutes
+  let routes = Input.asLines file |> parseRoutes
   let rec travel miles locations currentLocation =
     let validRoute (_, loc) = Set.contains loc locations
     if Set.isEmpty locations then miles
