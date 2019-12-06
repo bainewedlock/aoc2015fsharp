@@ -10,17 +10,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="day-15.fsx" />
-    <Content Include="data\input-14sample.txt" />
+    <Content Include="data\input-15.txt" />
+    <Content Include="data\sample-14.txt" />
     <Content Include="data\input-14.txt" />
     <Content Include="data\input-13.txt" />
-    <Content Include="data\Input-13sample.txt" />
+    <Content Include="data\sample-13.txt" />
     <Content Include="data\input-12.txt" />
     <Content Include="data\input-11.txt" />
     <Content Include="data\input-10.txt" />
-    <Content Include="data\input-9sample.txt" />
+    <Content Include="data\sample-9.txt" />
     <Content Include="data\input-9.txt" />
-    <Content Include="data\input-8sample.txt" />
+    <Content Include="data\sample-8.txt" />
     <Content Include="data\input-8.txt" />
     <Content Include="data\input-7.txt" />
     <Content Include="data\input-6.txt" />
@@ -30,6 +30,7 @@
     <Content Include="data\input-2.txt" />
     <Content Include="data\input-1.txt" />
     <None Include="input.fsx" />
+    <None Include="day-15.fsx" />
     <None Include="day-14.fsx" />
     <None Include="day-13.fsx" />
     <None Include="day-12.fsx" />

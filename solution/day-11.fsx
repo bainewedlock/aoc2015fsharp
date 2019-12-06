@@ -52,9 +52,9 @@ let answer password =
   |> fun chars -> String.Concat(chars)
 
 #time
-answer (Input.asText "11")
+answer (Input.asText "input-11")
 #time
 
 #time
-answer (answer (Input.asText "11"))
+answer (answer (Input.asText "input-11"))
 #time

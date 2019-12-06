@@ -24,7 +24,7 @@ let test key min index =
 
 #time
 let answer =
-    let key = Input.asText "4"
+    let key = Input.asText "input-4"
     Seq.initInfinite id
     |> Seq.map (test key 5)
     |> Seq.find (fun x -> x > 0)
@@ -32,7 +32,7 @@ let answer =
 
 #time
 let answer' =
-    let key = Input.asText "4"
+    let key = Input.asText "input-4"
     Seq.initInfinite id
     |> Seq.map (test key 6)
     |> Seq.find (fun x -> x > 0)

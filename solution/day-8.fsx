@@ -25,13 +25,13 @@ let analyzeFile change file =
   |> Seq.map (analyzeLine change)
   |> Seq.sum
 
-let sample = analyzeFile decode "8sample"
-let answer = analyzeFile decode "8"
+let sample = analyzeFile decode "sample-8"
+let answer = analyzeFile decode "input-8"
 
 let encode =
   regexReplace @"""" "??"           >> // escape "
   regexReplace @"\\" "??"           >> // replace \
   regexReplace @"^.*$" "?$0?"          // surround
 
-let sample' = - analyzeFile encode "8sample"
-let answer' = - analyzeFile encode "8"
+let sample' = - analyzeFile encode "sample-8"
+let answer' = - analyzeFile encode "input-8"

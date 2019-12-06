@@ -43,8 +43,8 @@ let analyzeFile factor file =
   |> Seq.map (travel 0 locations)
   |> Seq.minBy (fun x -> factor * x)
 
-let sample = analyzeFile +1 "9sample"
-let answer = analyzeFile +1 "9"
+let sample = analyzeFile +1 "sample-9"
+let answer = analyzeFile +1 "input-9"
 
-let sample' = analyzeFile -1 "9sample"
-let answer' = analyzeFile -1 "9"
+let sample' = analyzeFile -1 "sample-9"
+let answer' = analyzeFile -1 "input-9"

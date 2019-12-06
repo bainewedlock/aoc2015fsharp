@@ -61,8 +61,8 @@ let race file duration fScoring =
   |> Seq.head
   |> List.max
 
-let sample = race "14sample" 1000 Scoring.distanceBased
-let answer = race "14" 2503 Scoring.distanceBased
-let sample' = race "14sample" 1000 Scoring.awardLeader
-let answer' = race "14" 2503 Scoring.awardLeader
+let sample = race "sample-14" 1000 Scoring.distanceBased
+let answer = race "input-14" 2503 Scoring.distanceBased
+let sample' = race "sample-14" 1000 Scoring.awardLeader
+let answer' = race "input-14" 2503 Scoring.awardLeader
 
