@@ -25,20 +25,20 @@ let inBounds size (x, y) =
   y >= 0 && y < size
 
 let tick size state =
-  let relevant = 
-    state
-    |> Set.toList
-    //|> List.collect (fun cell ->
-    //  circleAround cell |> Seq.filter (inBounds size) |> Seq.toList)
-    |> List.collect (circleAround >> Seq.filter (inBounds size) >> Seq.toList)
-    |> Set
-  relevant
-  |> Set.map (fun cell ->
+  let analyze cell =
     circleAround cell
     |> Set.intersect state
     |> Set.count
-    |> fun c -> (cell, c))
-  |> Set.fold (fun on (cell, n) ->
+    |> fun c -> (cell, c)
+  let grow =
+    circleAround
+    >> Set.filter (inBounds size)
+    >> Set.toList
+  state
+  |> Set.toList
+  |> List.collect grow
+  |> List.map analyze
+  |> List.fold (fun on (cell, n) ->
       match state.Contains(cell), n with 
       | true, 2 | true, 3 -> cell::on
       | false, 3 -> cell::on
@@ -54,10 +54,11 @@ let solve size steps input fIntercept =
     |> fIntercept)
       (parseInput input)
   |> Set.count
+
 let sample = solve 6 4 "sample-18" id
 
 #time
-let answer = solve 100 100 "input-18"
+let answer = solve 100 100 "input-18" id
 #time
 //Real: 00:02:48.796, CPU: 00:02:48.125, GC gen0: 63005, gen1: 40, gen2: 1
 //val answer : int = 1061
