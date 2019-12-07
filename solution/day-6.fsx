@@ -30,7 +30,7 @@ let answer =
         | StartsWith "turn on" rect -> turnOn rect
         | StartsWith "turn off" rect -> turnOff rect
         | StartsWith "toggle" rect -> toggle rect
-    Input.asLines "input-6"
+    Input.asArray "input-6"
     |> Seq.iter handleLine
     state
     |> Seq.cast<int>
@@ -48,7 +48,7 @@ let answer' =
         | StartsWith "turn on" rect -> turnOn rect
         | StartsWith "turn off" rect -> turnOff rect
         | StartsWith "toggle" rect -> toggle rect
-    Input.asLines "input-6"
+    Input.asArray "input-6"
     |> Seq.iter handleLine
     state
     |> Seq.cast<int>

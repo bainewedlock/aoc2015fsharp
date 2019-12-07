@@ -10,7 +10,7 @@ let (|Int|) (s : string) = int s
 let (|Person|) (s : string) = s.Substring(0, 1)
 
 let rules = 
-  Input.asLines "input-13"
+  Input.asArray "input-13"
   |> Array.toList
   |> List.map (fun l ->
     let m = Regex.Match(l, pattern)

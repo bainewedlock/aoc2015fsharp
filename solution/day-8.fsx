@@ -21,7 +21,7 @@ let analyzeLine change line =
   lineLength - reducedLength
 
 let analyzeFile change file =
-  Input.asLines file
+  Input.asArray file
   |> Seq.map (analyzeLine change)
   |> Seq.sum
 

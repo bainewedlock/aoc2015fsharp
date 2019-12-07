@@ -52,7 +52,7 @@ let tickState (fScore : Scoring.Func) { Reindeers = rs; Mileage = ms; Scores = s
   Some (ss', { Reindeers = rs'; Mileage = ms'; Scores = ss' })
   
 let race file duration fScoring =
-  Input.asLines file
+  Input.asArray file
   |> Array.toList
   |> List.map (parseReindeer duration)
   |> State.create
