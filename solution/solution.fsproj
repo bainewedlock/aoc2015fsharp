@@ -10,6 +10,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="day-20.fsx" />
+    <Content Include="data\input-20.txt" />
     <Content Include="data\sample-19.txt" />
     <Content Include="data\input-19.txt" />
     <Content Include="data\input-18.txt" />
