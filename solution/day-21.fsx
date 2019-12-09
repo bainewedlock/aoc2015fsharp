@@ -2,29 +2,28 @@
 #load "input.fsx"
 
 type Item = {
-    SlotType : string
     Name : string
+    SlotName : string
     Cost : int
     Damage : int
     Armor : int
   }
 
 module Item = 
-  let name item = item.Name
   let cost item = item.Cost
   let damage item = item.Damage
   let armor item = item.Armor
 
 type Slot = {
+    Name : string
     MinItems : int
     MaxItems : int
   }
 
-let split (s: string) =
-  s.Split([|' '|], StringSplitOptions.RemoveEmptyEntries)
-  |> Array.toList
-
 let itemCatalog : Map<string, Item list> = 
+  let split (s: string) =
+    s.Split([|' '|], StringSplitOptions.RemoveEmptyEntries)
+    |> Array.toList
   Input.asList "input-21-shop"
   |> List.filter ((<>) "")
   |> List.map (fun s -> s.Replace(" +", "+"))
@@ -34,7 +33,7 @@ let itemCatalog : Map<string, Item list> =
         (c'.TrimEnd(':'), is)
       | [na;co;da;ar] ->
         let item = {
-          SlotType = c
+          SlotName = c
           Name = na
           Cost = int co
           Damage = int da
@@ -43,32 +42,25 @@ let itemCatalog : Map<string, Item list> =
       | xs -> failwithf "unexpected line: %A" xs)
         ("?", [])
   |> snd
-  |> List.groupBy (fun item -> item.SlotType)
+  |> List.groupBy (fun item -> item.SlotName)
   |> Map
 
 type State =
   {
-    Stock : string List
-    FreeSlots : Map<string, Slot>
+    FreeSlots : Slot list
     GoldSpent : int
     Damage : int
     Armor : int
-    Inventory : string List
   }
   with static member create =
         {
-          Stock =
-            itemCatalog
-            |> Seq.collect (fun x -> x.Value |> List.map Item.name)
-            |> Seq.toList
-          FreeSlots = Map [
-            ("Weapons", { MinItems = 1; MaxItems = 1 } )
-            ("Armor"  , { MinItems = 0; MaxItems = 1 } )
-            ("Rings"  , { MinItems = 0; MaxItems = 2 } ) ]
+          FreeSlots = [
+            { Name = "Weapons"; MinItems = 1; MaxItems = 1 } 
+            { Name = "Armor"  ; MinItems = 0; MaxItems = 1 }
+            { Name = "Rings"  ; MinItems = 0; MaxItems = 2 } ]
           GoldSpent = 0
           Damage = 0
           Armor = 0
-          Inventory = []
         }
 
 let permuteSlot min max items = 
@@ -87,39 +79,33 @@ let permuteSlot min max items =
   ] 
   loop [] max items
 
-let assignSlot name (items: Item list) state = 
+let assignSlot name (items: Item list) state : State = 
   let itemSum x = List.sumBy x items
-  let itemNames = items |> List.map Item.name
   { state with
-      Stock = state.Stock |> List.except itemNames
-      FreeSlots = state.FreeSlots.Remove name
+      FreeSlots = List.filter (fun s -> s.Name <> name) state.FreeSlots
       Armor = state.Armor + itemSum Item.armor
       Damage = state.Damage + itemSum Item.damage
       GoldSpent = state.GoldSpent + itemSum Item.cost
-      Inventory = List.append state.Inventory itemNames
   }
 
 let rec calcPermutations (s: State) = seq {
-  if s.FreeSlots.IsEmpty then yield s
-  else
-    for kvp in s.FreeSlots do
-      let slot = kvp.Value
-      let items = itemCatalog.Item(kvp.Key)
-      for xs in permuteSlot slot.MinItems slot.MaxItems items do
-        let s' = assignSlot kvp.Key xs s
-        yield! calcPermutations s'
+  match s.FreeSlots with
+  | [] -> yield s
+  | x::_ ->
+    let items = itemCatalog.Item(x.Name)
+    for xs in permuteSlot x.MinItems x.MaxItems items do
+      let s' = assignSlot x.Name xs s
+      yield! calcPermutations s'
 }
 
 type player = { Hitpoints : int; Damage : int; Armor : int }
 
 let calcTicks att def : int option =
-  match att.Damage - def.Armor with
-  | 0 -> None
-  | dps ->
-    let t = def.Hitpoints / dps
-    if t * dps < def.Hitpoints
-    then Some (t + 1)
-    else Some t
+  let dps = max 1 (att.Damage - def.Armor)
+  let t = def.Hitpoints / dps
+  if t * dps < def.Hitpoints
+  then Some (t + 1)
+  else Some t
 
 let fight human boss =
   match calcTicks human boss, calcTicks boss human with
@@ -127,12 +113,24 @@ let fight human boss =
   | None, _ -> false
   | Some h, Some b -> h <= b
 
-let boss = { Hitpoints = 104; Damage = 8; Armor = 1 }
-calcPermutations State.create
-|> Seq.filter (fun s ->
-  let human = {
-    Hitpoints = 100
-    Damage = s.Damage
-    Armor = s.Armor }
-  fight human boss)
-|> Seq.minBy (fun s -> s.GoldSpent)
+type Outcome = { HumanWins : bool; GoldSpent : int }
+
+let solve =
+  let boss = { Hitpoints = 104; Damage = 8; Armor = 1 }
+  calcPermutations State.create
+  |> Seq.map (fun s ->
+    let human = {
+      Hitpoints = 100
+      Damage = s.Damage
+      Armor = s.Armor }
+    { HumanWins = fight human boss; GoldSpent = s.GoldSpent})
+
+let answer = 
+  solve 
+  |> Seq.filter (fun o -> o.HumanWins)
+  |> Seq.minBy (fun o -> o.GoldSpent)
+
+let answer' = 
+  solve 
+  |> Seq.filter (fun o -> o.HumanWins = false)
+  |> Seq.maxBy (fun o -> o.GoldSpent)
