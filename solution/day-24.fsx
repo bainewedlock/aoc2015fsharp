@@ -15,18 +15,25 @@ type Container =
       }
 
 let calcQE (ps: int list) =
-  ps |> List.map bigint |>List.reduce (*)
+  ps |>
+  List.map bigint
+  |>List.reduce (*)
 
 type Score =
-  Score of int * bigint
+  {
+    value : int * bigint
+  }
   with
     static member calc (cs: Container list) = 
-      cs
-      |> List.map (fun c ->
-          ( c.packages.Length,
-            calcQE c.packages))
-      |> List.min
-      |> Score
+      let (packets, QE) =
+        cs
+        |> List.map (fun c ->
+            ( c.packages.Length,
+              calcQE c.packages))
+        |> List.minBy snd
+      {
+        value = (packets, QE)
+      }
 
 let rec solve2 max (acc: Container list) (cs: Container list) (ps: int Set) = seq {
   match cs with
@@ -35,7 +42,7 @@ let rec solve2 max (acc: Container list) (cs: Container list) (ps: int Set) = se
   | c::rest when c.capacity = 0 ->
     let max' = ps |> Set.count
     yield! solve2 max' (c::acc) rest ps
-  | c::_ when c.packages.Length >= max -> () // some pruning
+  | c::_ when c.packages.Length >= max -> () // pruning
   | c::rest ->
     let fitting = ps |> Set.filter ((>=) c.capacity)
     for p in fitting do
@@ -43,10 +50,14 @@ let rec solve2 max (acc: Container list) (cs: Container list) (ps: int Set) = se
   }
 
 let rec solve max n ps =
-  printfn "%A> trying with compartment size = %d" DateTimeOffset.Now max
+  printfn "trying with compartment size = %d" max
   let capacity = (List.sum ps) / n
-  let containers = (List.replicate n (Container.create capacity))
-  let solutions = solve2 max List<Container>.Empty containers (Set ps)
+  let solutions = 
+    solve2
+      max
+      List<Container>.Empty
+      (List.replicate n (Container.create capacity))
+      (Set ps)
   match Seq.isEmpty solutions with
   | true -> solve (max+1) n ps
   | _    -> solutions
@@ -55,18 +66,29 @@ let printBest sx =
   let mutable best = None
   sx
   |> Seq.iter (fun s ->
-    if best.IsNone || s < best.Value then
+    if best.IsNone || s.value < best.Value.value then
       best <- Some s
       printfn "--------------------"
-      printfn "%A" s) 
+      printfn "%A" DateTimeOffset.Now
+      printfn "%A" best) 
 
+#time
 let answer =
   Input.asList "input-24" |> List.map int
   |> solve 6 3
-  |> printBest
+  |> Seq.head
+  //|> printBest // takes forever, Seq.head worked
+#time
+//Real: 00:01:44.410, CPU: 00:01:44.109, GC gen0: 56503, gen1: 11, gen2: 1
+//val answer : Score = { value = (6, 10439961859) }
 
+#time
 let answer' =
   Input.asList "input-24" |> List.map int
   |> solve 1 4
-  |> printBest
+  |> Seq.head
+  //|> printBest // takes forever, Seq.head worked
+#time
+//Real: 00:00:08.006, CPU: 00:00:07.875, GC gen0: 4211, gen1: 0, gen2: 0
+//val answer' : Score = { value = (5, 72050269) }
 
