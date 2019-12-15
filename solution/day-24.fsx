@@ -20,27 +20,21 @@ let calcQE (ps: int list) =
   |>List.reduce (*)
 
 type Score =
-  {
-    value : int * bigint
-  }
+  Score of int * bigint
   with
     static member calc (cs: Container list) = 
-      let (packets, QE) =
-        cs
-        |> List.map (fun c ->
-            ( c.packages.Length,
-              calcQE c.packages))
-        |> List.minBy snd
-      {
-        value = (packets, QE)
-      }
+      cs
+      |> List.map (fun c ->
+          ( c.packages.Length,
+            calcQE c.packages))
+      |> List.minBy snd
 
 let rec solve2 max (acc: Container list) (cs: Container list) (ps: int Set) = seq {
   match cs with
   | []      ->
     yield Score.calc acc
   | c::rest when c.capacity = 0 ->
-    let max' = ps |> Set.count
+    let max' = (ps |> Set.count) - rest.Length + 1
     yield! solve2 max' (c::acc) rest ps
   | c::_ when c.packages.Length >= max -> () // pruning
   | c::rest ->
@@ -66,7 +60,7 @@ let printBest sx =
   let mutable best = None
   sx
   |> Seq.iter (fun s ->
-    if best.IsNone || s.value < best.Value.value then
+    if best.IsNone || s < best.Value then
       best <- Some s
       printfn "--------------------"
       printfn "%A" DateTimeOffset.Now
