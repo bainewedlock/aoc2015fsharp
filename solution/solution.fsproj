@@ -43,6 +43,7 @@
     <Content Include="data\input-2.txt" />
     <Content Include="data\input-1.txt" />
     <None Include="input.fsx" />
+    <None Include="day-25.fsx" />
     <None Include="day-24.fsx" />
     <None Include="day-23.fsx" />
     <None Include="day-22.fsx" />
